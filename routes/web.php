@@ -6,9 +6,12 @@ use Illuminate\Support\Facades\Request;
 use Illuminate\Http\JsonResponse;
 
 
+
 Route::get('/', function () {
     return view('index');
 });
+
+
 
 Route::get('/home', function () {
     $allProducts = DB::select('select * from products');
@@ -29,14 +32,17 @@ Route::get('/admin/products/add', function () {
         'price' => Request::get('productprice')
     ]);
     return new JsonResponse([
-        "message" => "success"
+        "message" => "success",
+        "status" => "OK",
     ]);
 });
 
 Route::get('/users/amount', function () {
     $currentUser = DB::table('users')->where('email', '=', Request::get('useremail'))->first();
-    $currentUser->moneys += Request::get('amount');
-    $currentUser->update();
+    // $currentUser->moneys += Request::get('amount');
+    DB::table('users')->where('email', '=', Request::get('useremail'))->update([
+        "moneys" => (int)Request::get('amount') + $currentUser->moneys
+    ]);
     return new JsonResponse([
         "status" => "OK",
         "moneys" => $currentUser->moneys,
@@ -109,10 +115,13 @@ Route::get('/users/bucket/add', function () {
         "name" => Request::get('productname'),
         "price" => (int)Request::get('productprice')
     ]);
-    $currentUser->productsInBucket = json_encode($productsInBucket);
-    $currentUser->update();
+    // $currentUser->productsInBucket = json_encode($productsInBucket);
+    DB::table('users')->where('email', '=', Request::get('useremail'))->update([
+        "productsInBucket" => json_encode($productsInBucket)
+    ]);
     return new JsonResponse([
-        "productsInBucket" => $productsInBucket
+        "status" => "OK",
+        "message" => "success"
     ]);
 });
 
@@ -121,12 +130,15 @@ Route::get('/users/bucket/delete', function () {
     $productsInBucket = json_decode($currentUser->productsInBucket);
     
     $productsInBucket = array_filter($productsInBucket, function($product) {
-        return $product["id"] !== Request::get('productid');
+        return $product->id !== Request::get('productid');
     });
-    $currentUser->productsInBucket = json_encode($productsInBucket);
-    // $currentUser->update();
+    // $currentUser->productsInBucket = json_encode($productsInBucket);
+    DB::table('users')->where('email', '=', Request::get('useremail'))->update([
+        "productsInBucket" => json_encode($productsInBucket)
+    ]);
     return new JsonResponse([
-        "productsInBucket" => $productsInBucket
+        "status" => "OK",
+        "message" => "success"
     ]);
 });
 
@@ -138,21 +150,24 @@ Route::get('/product/{productID}', function ($productID) {
     ]);
 });
 
-Route::get('/user/bucket/buy', function () {
+Route::get('/users/bucket/buy', function () {
     $currentUser = DB::table('users')->where('email', '=', Request::get('useremail'))->first();
     $commonPrice = 0;
     $productsInBucket = json_decode($currentUser->productsInBucket);
     foreach($productsInBucket as $product){
         $commonPrice += $product->price;
     }
-    if($currentUser >= $commonPrice) {
+    if($currentUser->moneys >= $commonPrice) {
         DB::table('orders')->insert([
             'ownername' => Request::get('useremail'),
             'price' => $commonPrice
         ]);
-        $currentUser->moneys -= $commonPrice;
-        $currentUser->productsInBucket = "[]";
-        // $currentUser->update();
+        // $currentUser->moneys -= $commonPrice;
+        // $currentUser->productsInBucket = "[]";
+        DB::table('users')->where('email', '=', Request::get('useremail'))->update([
+            "moneys" =>  (int)$currentUser->moneys - $commonPrice,
+            "productsInBucket" => "[]",
+        ]);
         return new JsonResponse([
             "status" => "OK",
             "message" => "success",
@@ -165,5 +180,13 @@ Route::get('/user/bucket/buy', function () {
 });
 
 Route::get('{redirectroute}', function ($redirectroute) {
-    return redirect('/')->with('redirectroute', $redirectroute);
+    return redirect('/')->with('redirectroute', Request::path());
+});
+
+Route::get('{redirectrouteone}/{redirectroutetwo}', function ($redirectrouteone, $redirectroutetwo) {
+    return redirect('/')->with('redirectroute', Request::path());
+});
+
+Route::get('{redirectrouteone}/{redirectroutetwo}/{redirectroutethree}', function ($redirectrouteone, $redirectroutetwo, $redirectroutethree) {
+    return redirect('/')->with('redirectroute', Request::path());
 });
