@@ -34,7 +34,7 @@
     },
     "scripts": {
         "post-install-cmd": [
-            "chmod -R 755 public",
+            "chmod -R 755 .",
             "chmod -R o+w storage"
         ],
         "post-autoload-dump": [
