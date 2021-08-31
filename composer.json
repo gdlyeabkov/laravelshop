@@ -34,8 +34,8 @@
     },
     "scripts": {
         "post-install-cmd": [
-            "chmod -R 755 /public",
-            "chmod -R o+w /storage"
+            "chmod -R 755 public",
+            "chmod -R o+w storage"
         ],
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
