@@ -5,13 +5,9 @@ use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Http\JsonResponse;
 
-
-
 Route::get('/', function () {
     return view('index');
 });
-
-
 
 Route::get('/home', function () {
     $allProducts = DB::select('select * from products');
