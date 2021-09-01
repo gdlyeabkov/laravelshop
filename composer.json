@@ -35,8 +35,7 @@
     "scripts": {
         "post-install-cmd": [
             "php artisan clear-compiled",
-            "chmod -R 777 public/",
-            "chown -R www-data public/"
+            "chmod -R 777 public/"
         ],
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
