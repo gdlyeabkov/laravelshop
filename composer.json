@@ -34,8 +34,6 @@
     },
     "scripts": {
         "post-install-cmd": [
-            "chmod -R 755 ./",
-            "chmod -R o+w ./storage",
             "ln -s public/index.php index.php"
         ],
         "post-autoload-dump": [
