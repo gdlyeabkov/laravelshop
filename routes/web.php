@@ -177,6 +177,7 @@ Route::get('/', function () {
 
 Route::get('/welcome', function () {
     // return view('welcome');
+    $allOrders = DB::select('select * from orders');
     return new JsonResponse([
         "status" => "OK",
         "message" => "success"
