@@ -14,10 +14,10 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous">
         </script>
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-        <link href="<?= asset('shop/css/app.8171f16b.css') ?>" rel="preload" as="style">
-        <link href="<?= asset('shop/js/app.53102edf.js') ?>" rel="preload" as="script">
-        <link href="<?= asset('shop/js/chunk-vendors.fb4b1076.js') ?>" rel="preload" as="script">
-        <link href="<?= asset('shop/css/app.8171f16b.css') ?>" rel="stylesheet">
+        <link href="<?= asset('https://karasgames.herokuapp.com/shop/css/app.8171f16b.css') ?>" rel="preload" as="style">
+        <link href="<?= asset('https://karasgames.herokuapp.com/shop/js/app.53102edf.js') ?>" rel="preload" as="script">
+        <link href="<?= asset('https://karasgames.herokuapp.com/shop/js/chunk-vendors.fb4b1076.js') ?>" rel="preload" as="script">
+        <link href="<?= asset('https://karasgames.herokuapp.com/shop/css/app.8171f16b.css') ?>" rel="stylesheet">
         <style>
             body {
                 background: linear-gradient(270deg, #000000 0%, #707475 100%);
@@ -29,9 +29,9 @@
             <strong>We're sorry but vuemyinternetshop doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
         </noscript>
         <div id="app"></div>
-        <script src="<?= asset('shop/js/chunk-vendors.fb4b1076.js') ?>">
+        <script src="<?= asset('https://karasgames.herokuapp.com/shop/js/chunk-vendors.fb4b1076.js') ?>">
         </script>
-        <script src="<?= asset('shop/js/app.53102edf.js') ?>">
+        <script src="<?= asset('https://karasgames.herokuapp.com/shop/js/app.53102edf.js') ?>">
         </script> 
     </body>
 </html>
