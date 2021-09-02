@@ -5,10 +5,6 @@ use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Http\JsonResponse;
 
-Route::get('/', function () {
-    return view('index');
-});
-
 Route::get('/home', function () {
     $allProducts = DB::select('select * from products');
     return new JsonResponse([
@@ -175,6 +171,10 @@ Route::get('/users/bucket/buy', function () {
     ]);
 });
 
+Route::get('/', function () {
+    return view('index');
+});
+
 Route::get('{redirectroute}', function ($redirectroute) {
     return redirect('/')->with('redirectroute', Request::path());
 });
@@ -186,3 +186,4 @@ Route::get('{redirectrouteone}/{redirectroutetwo}', function ($redirectrouteone,
 Route::get('{redirectrouteone}/{redirectroutetwo}/{redirectroutethree}', function ($redirectrouteone, $redirectroutetwo, $redirectroutethree) {
     return redirect('/')->with('redirectroute', Request::path());
 });
+
