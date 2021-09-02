@@ -176,7 +176,11 @@ Route::get('/', function () {
 });
 
 Route::get('/welcome', function () {
-    return view('welcome');
+    // return view('welcome');
+    return new JsonResponse([
+        "status" => "OK",
+        "message" => "success"
+    ]);
 });
 
 Route::get('{redirectroute}', function ($redirectroute) {
