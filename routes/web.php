@@ -175,6 +175,10 @@ Route::get('/', function () {
     return view('index');
 });
 
+Route::get('/welcome', function () {
+    return view('welcome');
+});
+
 Route::get('{redirectroute}', function ($redirectroute) {
     return redirect('/')->with('redirectroute', Request::path());
 });
