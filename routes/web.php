@@ -8,7 +8,8 @@ use Illuminate\Http\JsonResponse;
 use App\Models\ProductModel;
 
 Route::get('/home', function () {
-    $allProducts = DB::select('select * from products');
+    $allProducts = [];
+    // $allProducts = DB::select('select * from products');
     return new JsonResponse([
         "allProducts" => $allProducts,
         "message" => "success"
@@ -16,15 +17,16 @@ Route::get('/home', function () {
 });
 
 Route::get('/admin/orders', function () {
-    $allOrders = DB::select('select * from orders');
+    // $allOrders = DB::select('select * from orders');
+    $allOrders = [];
     return new JsonResponse($allOrders);
 });
 
 Route::get('/admin/products/add', function () {
-    DB::table('products')->insert([
-        'name' => Request::get('productname'),
-        'price' => Request::get('productprice')
-    ]);
+    // DB::table('products')->insert([
+    //     'name' => Request::get('productname'),
+    //     'price' => Request::get('productprice')
+    // ]);
     return new JsonResponse([
         "message" => "success",
         "status" => "OK",
@@ -32,46 +34,47 @@ Route::get('/admin/products/add', function () {
 });
 
 Route::get('/users/amount', function () {
-    $currentUser = DB::table('users')->where('email', '=', Request::get('useremail'))->first();
-    // $currentUser->moneys += Request::get('amount');
-    DB::table('users')->where('email', '=', Request::get('useremail'))->update([
-        "moneys" => (int)Request::get('amount') + $currentUser->moneys
-    ]);
+    // $currentUser = DB::table('users')->where('email', '=', Request::get('useremail'))->first();
+    // DB::table('users')->where('email', '=', Request::get('useremail'))->update([
+    //     "moneys" => (int)Request::get('amount') + $currentUser->moneys
+    // ]);
+    // $moneys = $currentUser->moneys;
+    $moneys = 0;
     return new JsonResponse([
         "status" => "OK",
-        "moneys" => $currentUser->moneys,
+        "moneys" => $moneys
     ]);
 });
 
 Route::get('/admin/products/delete', function () {
-    DB::table('products')->where('name', '=', Request::get('productname'))->delete();
+    // DB::table('products')->where('name', '=', Request::get('productname'))->delete();
     return new JsonResponse([
         "status" => "OK"
     ]);
 });
 
 Route::get('/users/check', function () {
-    $currentUser = DB::table('users')->where('email', '=', Request::get('useremail'))->first();
-    $passwordCheck = Hash::check(Request::get('userpassword'), $currentUser->password);
-    if(Request::get('useremail') === $currentUser->email && $passwordCheck && Request::get('userpassword') !== ''){
-        return new JsonResponse([
-            "user" => $currentUser,
-            "status" => "OK"
-        ]);
-    }
+    // $currentUser = DB::table('users')->where('email', '=', Request::get('useremail'))->first();
+    // $passwordCheck = Hash::check(Request::get('userpassword'), $currentUser->password);
+    // if(Request::get('useremail') === $currentUser->email && $passwordCheck && Request::get('userpassword') !== ''){
+    //     return new JsonResponse([
+    //         "user" => $currentUser,
+    //         "status" => "OK"
+    //     ]);
+    // }
     return new JsonResponse([
         "status" => "Error"
     ]);
 });
 
 Route::get('/users/usercreatesuccess', function () {
-    $allUsers = DB::select('select * from users');
+    // $allUsers = DB::select('select * from users');
     $userExists = false;
-    foreach($allUsers as $user) {
-        if($user === Request::get("useremail")){
-            $userExists = true;
-        }
-    }
+    // foreach($allUsers as $user) {
+    //     if($user === Request::get("useremail")){
+    //         $userExists = true;
+    //     }
+    // }
     if($userExists){
         return new JsonResponse([
             "status" => "Error"
@@ -79,12 +82,12 @@ Route::get('/users/usercreatesuccess', function () {
     } else {
         $encodedPassword = "#";
         $encodedPassword = Hash::make(Request::get("userpassword"));
-        DB::table('users')->insert([
-            'email' => Request::get('useremail'),
-            'password' => $encodedPassword,
-            'name' => Request::get('username'),
-            'age' => Request::get('userage')
-        ]);
+        // DB::table('users')->insert([
+        //     'email' => Request::get('useremail'),
+        //     'password' => $encodedPassword,
+        //     'name' => Request::get('username'),
+        //     'age' => Request::get('userage')
+        // ]);
         return new JsonResponse([
             "status" => "created"
         ]);
@@ -92,9 +95,9 @@ Route::get('/users/usercreatesuccess', function () {
 });
 
 Route::get('/users/bucket', function () {
-    $currentUser = DB::table('users')->where('email', '=', Request::get('useremail'))->first();
-    $productsInBucket = json_decode($currentUser->productsInBucket);
-    // $productsInBucket = [];
+    // $currentUser = DB::table('users')->where('email', '=', Request::get('useremail'))->first();
+    // $productsInBucket = json_decode($currentUser->productsInBucket);
+    $productsInBucket = [];
     return new JsonResponse([
         "productsInBucket" => $productsInBucket,
         "message" => "success"
@@ -102,17 +105,17 @@ Route::get('/users/bucket', function () {
 });
 
 Route::get('/users/bucket/add', function () {
-    $currentUser = DB::table('users')->where('email', '=', Request::get('useremail'))->first();
-    $productsInBucket = json_decode($currentUser->productsInBucket);
+    // $currentUser = DB::table('users')->where('email', '=', Request::get('useremail'))->first();
+    // $productsInBucket = json_decode($currentUser->productsInBucket);
+    $productsInBucket = [];
     array_push($productsInBucket, [
         "id" => (string)rand(1, 500),
         "name" => Request::get('productname'),
         "price" => (int)Request::get('productprice')
     ]);
-    // $currentUser->productsInBucket = json_encode($productsInBucket);
-    DB::table('users')->where('email', '=', Request::get('useremail'))->update([
-        "productsInBucket" => json_encode($productsInBucket)
-    ]);
+    // DB::table('users')->where('email', '=', Request::get('useremail'))->update([
+    //     "productsInBucket" => json_encode($productsInBucket)
+    // ]);
     return new JsonResponse([
         "status" => "OK",
         "message" => "success"
@@ -120,16 +123,15 @@ Route::get('/users/bucket/add', function () {
 });
 
 Route::get('/users/bucket/delete', function () {
-    $currentUser = DB::table('users')->where('email', '=', Request::get('useremail'))->first();
-    $productsInBucket = json_decode($currentUser->productsInBucket);
+    // $currentUser = DB::table('users')->where('email', '=', Request::get('useremail'))->first();
+    // $productsInBucket = json_decode($currentUser->productsInBucket);
     
     $productsInBucket = array_filter($productsInBucket, function($product) {
         return $product->id !== Request::get('productid');
     });
-    // $currentUser->productsInBucket = json_encode($productsInBucket);
-    DB::table('users')->where('email', '=', Request::get('useremail'))->update([
-        "productsInBucket" => json_encode($productsInBucket)
-    ]);
+    // DB::table('users')->where('email', '=', Request::get('useremail'))->update([
+    //     "productsInBucket" => json_encode($productsInBucket)
+    // ]);
     return new JsonResponse([
         "status" => "OK",
         "message" => "success"
@@ -137,7 +139,8 @@ Route::get('/users/bucket/delete', function () {
 });
 
 Route::get('/product/{productID}', function ($productID) {
-    $product = DB::table('products')->where('id', '=', $productID)->first();
+    // $product = DB::table('products')->where('id', '=', $productID)->first();
+    $product = [];
     return new JsonResponse([
         "product" => $product,
         "message" => "success",
@@ -145,31 +148,31 @@ Route::get('/product/{productID}', function ($productID) {
 });
 
 Route::get('/users/bucket/buy', function () {
-    $currentUser = DB::table('users')->where('email', '=', Request::get('useremail'))->first();
+    // $currentUser = DB::table('users')->where('email', '=', Request::get('useremail'))->first();
     $commonPrice = 0;
-    $productsInBucket = json_decode($currentUser->productsInBucket);
-    foreach($productsInBucket as $product){
-        $commonPrice += $product->price;
-    }
-    if($currentUser->moneys >= $commonPrice) {
-        DB::table('orders')->insert([
-            'ownername' => Request::get('useremail'),
-            'price' => $commonPrice
-        ]);
-        // $currentUser->moneys -= $commonPrice;
-        // $currentUser->productsInBucket = "[]";
-        DB::table('users')->where('email', '=', Request::get('useremail'))->update([
-            "moneys" =>  (int)$currentUser->moneys - $commonPrice,
-            "productsInBucket" => "[]",
-        ]);
-        return new JsonResponse([
-            "status" => "OK",
-            "message" => "success",
-        ]);
-    }
+    // $productsInBucket = json_decode($currentUser->productsInBucket);
+    // foreach($productsInBucket as $product){
+    //     $commonPrice += $product->price;
+    // }
+    // if($currentUser->moneys >= $commonPrice) {
+    //     DB::table('orders')->insert([
+    //         'ownername' => Request::get('useremail'),
+    //         'price' => $commonPrice
+    //     ]);
+    //     // $currentUser->moneys -= $commonPrice;
+    //     // $currentUser->productsInBucket = "[]";
+    //     DB::table('users')->where('email', '=', Request::get('useremail'))->update([
+    //         "moneys" =>  (int)$currentUser->moneys - $commonPrice,
+    //         "productsInBucket" => "[]",
+    //     ]);
+    //     return new JsonResponse([
+    //         "status" => "OK",
+    //         "message" => "success",
+    //     ]);
+    // }
     return new JsonResponse([
         "status" => "Error",
-        "message" => "success",
+        "message" => "success"
     ]);
 });
 
@@ -180,7 +183,6 @@ Route::get('/', function () {
 Route::get('/welcome', function () {
     // return view('welcome');
     // $allOrders = DB::select('select * from orders');
-    $products = ProductModel::all();
     return new JsonResponse([
         "products" => $products,
         "status" => "OK",
