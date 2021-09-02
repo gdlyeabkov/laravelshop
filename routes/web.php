@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Http\JsonResponse;
 
+use App\Models\ProductModel;
+
 Route::get('/home', function () {
     $allProducts = DB::select('select * from products');
     return new JsonResponse([
@@ -177,8 +179,10 @@ Route::get('/', function () {
 
 Route::get('/welcome', function () {
     // return view('welcome');
-    $allOrders = DB::select('select * from orders');
+    // $allOrders = DB::select('select * from orders');
+    $products = ProductModel::all();
     return new JsonResponse([
+        "products" => $products,
         "status" => "OK",
         "message" => "success"
     ]);
